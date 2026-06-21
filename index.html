@@ -6,17 +6,18 @@
   <title>라이더 순수익 계산기 V1.0 | 생활금융연구소</title>
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: #eef4fb;
       --panel: #ffffff;
-      --ink: #172033;
+      --ink: #10182f;
       --muted: #667085;
-      --line: #d9e0ea;
-      --brand: #1769e0;
-      --brand-dark: #0f4fa8;
+      --line: #d9e4f0;
+      --brand: #1456a8;
+      --brand-dark: #0d2d55;
+      --brand-soft: #edf6ff;
+      --accent: #2f80ed;
       --good: #0f8a5f;
-      --warn: #c05621;
-      --shadow: 0 14px 36px rgba(23, 32, 51, 0.10);
-      --radius: 8px;
+      --shadow: 0 18px 44px rgba(13, 45, 85, 0.12);
+      --radius: 18px;
     }
 
     * {
@@ -25,109 +26,229 @@
 
     body {
       margin: 0;
-      background: var(--bg);
+      min-height: 100vh;
       color: var(--ink);
+      background:
+        radial-gradient(circle at 82% 9%, rgba(47, 128, 237, 0.16), transparent 29%),
+        linear-gradient(180deg, #f8fbff 0%, #eef4fb 48%, #f7fbff 100%);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
       line-height: 1.5;
     }
 
     .rider-calculator {
-      width: min(100%, 980px);
+      width: min(100%, 1440px);
       margin: 0 auto;
-      padding: 24px 14px 36px;
+      padding: 30px 24px 34px;
     }
 
-    .calculator-header {
-      margin-bottom: 18px;
-      padding: 22px 18px;
-      background: linear-gradient(135deg, #123b7a, #1769e0);
-      color: #ffffff;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr) 390px;
+      gap: 24px;
+      align-items: start;
+      min-height: 180px;
+      padding-bottom: 18px;
     }
 
-    .calculator-header p {
-      margin: 8px 0 0;
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 15px;
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: -24px;
+      right: -24px;
+      bottom: 0;
+      height: 64px;
+      opacity: 0.42;
+      background:
+        linear-gradient(90deg, transparent 0 30px, rgba(20, 86, 168, 0.16) 30px 58px, transparent 58px 100px),
+        linear-gradient(180deg, transparent 0 42px, rgba(20, 86, 168, 0.14) 42px 64px);
+      background-size: 115px 64px, 100% 64px;
+      pointer-events: none;
+    }
+
+    .brand-logo {
+      width: min(238px, 100%);
+      height: auto;
+      object-fit: contain;
+    }
+
+    .hero-title {
+      padding-top: 8px;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(24px, 4vw, 36px);
+      color: var(--brand-dark);
+      font-size: clamp(34px, 4.2vw, 58px);
+      line-height: 1.08;
       letter-spacing: 0;
+      font-weight: 950;
     }
 
-    h2 {
-      margin: 0 0 14px;
+    h1 strong {
+      color: var(--accent);
+    }
+
+    .hero-title p {
+      margin: 16px 0 0;
+      color: #25304a;
+      font-size: clamp(15px, 1.45vw, 20px);
+      font-weight: 800;
+    }
+
+    .hero-copy {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hero-mascots {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      min-height: 190px;
+      z-index: 2;
+    }
+
+    .mascot-duo {
+      width: min(350px, 100%);
+      height: auto;
+      border-radius: 14px;
+      mix-blend-mode: multiply;
+    }
+
+    .mascot-note {
+      position: absolute;
+      left: -38px;
+      top: 4px;
+      color: var(--brand-dark);
       font-size: 20px;
+      font-weight: 900;
+      line-height: 1.35;
+      transform: rotate(-3deg);
+      white-space: nowrap;
     }
 
-    .calculator-grid {
+    .mascot-note span {
+      display: block;
+      color: var(--accent);
+      font-size: 15px;
+    }
+
+    .content-grid {
+      position: relative;
+      z-index: 3;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
-      gap: 16px;
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.92fr);
+      gap: 22px;
       align-items: start;
     }
 
-    .input-panel,
-    .result-panel,
-    .link-panel {
-      background: var(--panel);
+    .panel,
+    .footer-bar {
+      background: rgba(255, 255, 255, 0.92);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
     }
 
-    .input-panel,
-    .result-panel {
-      padding: 18px;
+    .panel {
+      padding: 24px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--brand-dark);
+      font-size: 24px;
+      font-weight: 950;
+    }
+
+    .title-icon,
+    .field-icon,
+    .result-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+    }
+
+    .title-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      font-size: 18px;
+      box-shadow: 0 9px 18px rgba(47, 128, 237, 0.22);
     }
 
     .field-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .field {
+      min-width: 0;
+      padding: 13px 18px 12px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     label {
-      display: block;
-      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 7px;
+      color: #242f48;
       font-size: 14px;
-      margin-bottom: 6px;
+      font-weight: 850;
+    }
+
+    .field-icon {
+      width: 23px;
+      height: 23px;
+      border-radius: 7px;
+      background: #5f9bea;
+      font-size: 12px;
     }
 
     .field small {
       display: block;
-      margin-top: 5px;
+      margin-top: 6px;
       color: var(--muted);
       font-size: 12px;
-    }
-
-    input {
-      width: 100%;
-      min-height: 48px;
-      border: 1px solid #c8d1df;
-      border-radius: 7px;
-      padding: 10px 12px;
-      color: var(--ink);
-      background: #ffffff;
-      font-size: 17px;
-      font-weight: 700;
-      text-align: right;
-    }
-
-    input:focus {
-      outline: 3px solid rgba(23, 105, 224, 0.18);
-      border-color: var(--brand);
+      word-break: keep-all;
     }
 
     .input-unit {
       position: relative;
     }
 
-    .input-unit input {
-      padding-right: 42px;
+    input {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid #cad7e6;
+      border-radius: 6px;
+      padding: 7px 42px 7px 10px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.96);
+      font-size: 17px;
+      font-weight: 850;
+      text-align: right;
+    }
+
+    input:focus {
+      outline: 3px solid rgba(47, 128, 237, 0.18);
+      border-color: var(--accent);
     }
 
     .input-unit span {
@@ -141,76 +262,78 @@
     }
 
     .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px;
+      gap: 12px;
+      margin-top: 14px;
     }
 
     button,
-    .cta-button {
-      min-height: 46px;
+    .link-chip {
+      min-height: 42px;
       border: 0;
-      border-radius: 7px;
-      padding: 11px 14px;
-      font-size: 15px;
-      font-weight: 800;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 16px;
+      font-weight: 900;
       cursor: pointer;
       text-decoration: none;
       text-align: center;
     }
 
     .primary-button {
-      flex: 1;
-      background: var(--brand);
+      background: linear-gradient(135deg, var(--brand-dark), var(--brand));
       color: #ffffff;
-    }
-
-    .primary-button:hover {
-      background: var(--brand-dark);
+      box-shadow: 0 13px 26px rgba(13, 45, 85, 0.24);
     }
 
     .secondary-button {
-      background: #e9eef7;
-      color: #243047;
+      background: var(--brand-soft);
+      color: var(--brand-dark);
     }
 
     .result-list {
       display: grid;
-      gap: 10px;
     }
 
     .result-item {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) auto;
+      gap: 14px;
       align-items: center;
-      gap: 12px;
-      padding: 13px 0;
-      border-bottom: 1px solid #edf1f6;
+      min-height: 74px;
+      border-bottom: 1px solid var(--line);
     }
 
-    .result-item:last-child {
-      border-bottom: 0;
+    .result-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #5f9bea;
+      font-size: 15px;
     }
 
     .result-label {
-      color: var(--muted);
-      font-weight: 700;
+      color: #222b42;
+      font-weight: 850;
+      font-size: 17px;
     }
 
     .result-value {
       color: var(--ink);
-      font-size: 22px;
-      font-weight: 900;
+      font-size: clamp(23px, 2.2vw, 30px);
+      font-weight: 950;
       text-align: right;
       white-space: nowrap;
     }
 
     .result-item.highlight {
-      margin: 2px 0;
-      padding: 15px 12px;
-      background: #eef8f4;
-      border: 1px solid #bee4d2;
-      border-radius: var(--radius);
+      min-height: 84px;
+      margin: 12px 0;
+      padding: 0 16px;
+      border: 1px solid #b7d2f6;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #f7fbff, #edf6ff);
     }
 
     .result-item.highlight .result-label,
@@ -219,118 +342,168 @@
     }
 
     .notice {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 13px;
+      margin: 18px 10px 0;
+      color: #5e6577;
+      font-size: 14px;
     }
 
     .warning {
-      margin-top: 12px;
-      color: var(--warn);
-      font-size: 13px;
-      font-weight: 700;
       display: none;
-    }
-
-    .link-panel {
-      margin-top: 16px;
-      padding: 18px;
-    }
-
-    .question-list {
-      display: grid;
-      gap: 7px;
-      margin: 0 0 15px;
-      padding: 0;
-      list-style: none;
-      color: #26344d;
+      margin: 12px 10px 0;
+      color: #be2749;
+      font-size: 14px;
       font-weight: 800;
     }
 
-    .question-list li::before {
-      content: "Q. ";
+    .footer-bar {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) repeat(2, minmax(150px, 190px));
+      gap: 18px;
+      align-items: center;
+      margin-top: 16px;
+      padding: 18px 24px;
+    }
+
+    .footer-logo {
+      width: 220px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .footer-message {
+      color: #293047;
+      font-size: 18px;
+      font-weight: 850;
+    }
+
+    .footer-message strong {
       color: var(--brand);
     }
 
-    .cta-row {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+    .link-chip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 54px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: #222941;
+      font-size: 14px;
     }
 
-    .kakao-button {
-      background: #fee500;
-      color: #1f1f1f;
+    .link-chip span {
+      color: var(--brand);
+      font-size: 20px;
+      line-height: 1;
     }
 
-    .blog-button {
-      background: #03c75a;
-      color: #ffffff;
-    }
-
-    .embed-note {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    @media (max-width: 760px) {
-      .rider-calculator {
-        padding: 12px 10px 28px;
+    @media (max-width: 1040px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 14px;
       }
 
-      .calculator-header {
-        padding: 18px 14px;
+      .hero-mascots {
+        justify-content: flex-start;
       }
 
-      .calculator-grid,
-      .field-grid,
-      .cta-row {
+      .mascot-note {
+        position: static;
+        margin-right: 14px;
+        transform: none;
+      }
+
+      .content-grid,
+      .footer-bar {
         grid-template-columns: 1fr;
       }
 
-      .input-panel,
-      .result-panel,
-      .link-panel {
-        padding: 15px;
+      .footer-logo {
+        width: 200px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .rider-calculator {
+        padding: 18px 10px 26px;
       }
 
-      .actions {
-        position: sticky;
-        bottom: 0;
-        margin: 15px -15px -15px;
-        padding: 10px 15px;
-        background: rgba(255, 255, 255, 0.94);
-        border-top: 1px solid var(--line);
+      .panel {
+        padding: 16px;
+        border-radius: 16px;
+      }
+
+      .field-grid,
+      .result-item {
+        grid-template-columns: 1fr;
+      }
+
+      .field {
+        padding: 12px;
+      }
+
+      .hero-mascots {
+        display: none;
+      }
+
+      .result-item {
+        gap: 5px;
+        padding: 14px 0;
+      }
+
+      .result-icon {
+        display: none;
       }
 
       .result-value {
-        font-size: 20px;
+        text-align: left;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+        position: sticky;
+        bottom: 0;
+        margin: 14px -16px -16px;
+        padding: 10px 16px;
+        background: rgba(255, 255, 255, 0.96);
+        border-top: 1px solid var(--line);
       }
     }
   </style>
 </head>
 <body>
   <main class="rider-calculator" id="riderCalculator">
-    <section class="calculator-header" aria-labelledby="calculatorTitle">
-      <h1 id="calculatorTitle">라이더 순수익 계산기 V1.0</h1>
-      <p>오늘 매출에서 실제 지출을 뺀 뒤, 오늘 얼마가 남았는지 바로 확인하세요.</p>
+    <section class="hero" aria-labelledby="calculatorTitle">
+      <div>
+        <img class="brand-logo" src="assets/brand-logo-crop.png" alt="생활금융연구소 로고">
+      </div>
+      <div class="hero-title">
+        <h1 id="calculatorTitle">라이더 순수익 계산기 <strong>V1.0</strong></h1>
+        <p>실제 받은 돈에서 경비를 빼면, 오늘 순수익이 얼마인지 계산해보세요.</p>
+        <div class="hero-copy">매출이 아니라 내 손에 남는 돈을 확인하는 생활금융연구소 계산기입니다.</div>
+      </div>
+      <div class="hero-mascots">
+        <div class="mascot-note">루키가 먼저 계산하고<span>루나가 함께 확인해드릴게요.</span></div>
+        <img class="mascot-duo" src="assets/rookie-luna-hero.png" alt="루키와 루나 캐릭터">
+      </div>
     </section>
 
-    <section class="calculator-grid">
-      <form class="input-panel" id="calculatorForm">
-        <h2>오늘 입력</h2>
+    <section class="content-grid">
+      <form class="panel" id="calculatorForm">
+        <h2 class="section-title"><span class="title-icon">IN</span>오늘 입력</h2>
         <div class="field-grid">
           <div class="field">
-            <label for="revenue">오늘 매출</label>
+            <label for="revenue"><span class="field-icon">₩</span>오늘 실제 받은 돈</label>
             <div class="input-unit">
               <input id="revenue" type="number" inputmode="numeric" min="0" step="1000" value="200000">
               <span>원</span>
             </div>
+            <small>앱 정산금, 현금 결제 등 오늘 실제 받은 총액을 입력하세요.</small>
           </div>
 
           <div class="field">
-            <label for="distance">오늘 주행거리</label>
+            <label for="distance"><span class="field-icon">KM</span>오늘 주행거리</label>
             <div class="input-unit">
               <input id="distance" type="number" inputmode="decimal" min="0" step="1" value="150">
               <span>km</span>
@@ -338,7 +511,7 @@
           </div>
 
           <div class="field">
-            <label for="fuelEfficiency">연비</label>
+            <label for="fuelEfficiency"><span class="field-icon">FE</span>연비</label>
             <div class="input-unit">
               <input id="fuelEfficiency" type="number" inputmode="decimal" min="0" step="0.1" value="35">
               <span>km/L</span>
@@ -346,7 +519,7 @@
           </div>
 
           <div class="field">
-            <label for="fuelPrice">리터당 유가</label>
+            <label for="fuelPrice"><span class="field-icon">L</span>리터당 유가</label>
             <div class="input-unit">
               <input id="fuelPrice" type="number" inputmode="numeric" min="0" step="10" value="1700">
               <span>원</span>
@@ -354,7 +527,7 @@
           </div>
 
           <div class="field">
-            <label for="mealCost">식비</label>
+            <label for="mealCost"><span class="field-icon">식</span>식비</label>
             <div class="input-unit">
               <input id="mealCost" type="number" inputmode="numeric" min="0" step="1000" value="12000">
               <span>원</span>
@@ -362,7 +535,7 @@
           </div>
 
           <div class="field">
-            <label for="coffeeCost">커피</label>
+            <label for="coffeeCost"><span class="field-icon">커</span>커피</label>
             <div class="input-unit">
               <input id="coffeeCost" type="number" inputmode="numeric" min="0" step="500" value="4500">
               <span>원</span>
@@ -370,7 +543,7 @@
           </div>
 
           <div class="field">
-            <label for="cigaretteCost">담배</label>
+            <label for="cigaretteCost"><span class="field-icon">담</span>담배</label>
             <div class="input-unit">
               <input id="cigaretteCost" type="number" inputmode="numeric" min="0" step="500" value="4500">
               <span>원</span>
@@ -378,7 +551,7 @@
           </div>
 
           <div class="field">
-            <label for="extraCost">기타 비용</label>
+            <label for="extraCost"><span class="field-icon">기</span>기타 비용</label>
             <div class="input-unit">
               <input id="extraCost" type="number" inputmode="numeric" min="0" step="100" value="4214">
               <span>원</span>
@@ -386,34 +559,34 @@
           </div>
 
           <div class="field">
-            <label for="annualDepreciation">연간 감가상각비</label>
+            <label for="vehicleValue"><span class="field-icon">차</span>오토바이 차량가액</label>
             <div class="input-unit">
-              <input id="annualDepreciation" type="number" inputmode="numeric" min="0" step="10000" value="0">
+              <input id="vehicleValue" type="number" inputmode="numeric" min="0" step="10000" value="0">
               <span>원</span>
             </div>
-            <small>오토바이 가치 하락분을 365일로 나눠 반영</small>
+            <small>차량가액을 넣으면 기본 3년 기준 감가상각비로 나눠 오늘 비용에 반영합니다.</small>
           </div>
 
           <div class="field">
-            <label for="annualInsurance">연간 보험료</label>
+            <label for="annualInsurance"><span class="field-icon">보</span>연간 보험료</label>
             <div class="input-unit">
               <input id="annualInsurance" type="number" inputmode="numeric" min="0" step="10000" value="0">
               <span>원</span>
             </div>
-            <small>연간 보험료 ÷ 365일</small>
+            <small>연 보험료를 입력하면 365일로 나눠 오늘 하루 보험료로 반영합니다.</small>
           </div>
 
           <div class="field">
-            <label for="monthlyMaintenance">월 정비비</label>
+            <label for="monthlyMaintenance"><span class="field-icon">정</span>월 정비비</label>
             <div class="input-unit">
               <input id="monthlyMaintenance" type="number" inputmode="numeric" min="0" step="10000" value="0">
               <span>원</span>
             </div>
-            <small>월 정비비 ÷ 30일</small>
+            <small>월 정비비를 입력하면 30일로 나눠 오늘 비용에 반영합니다.</small>
           </div>
 
           <div class="field">
-            <label for="workHours">근무시간</label>
+            <label for="workHours"><span class="field-icon">시</span>근무시간</label>
             <div class="input-unit">
               <input id="workHours" type="number" inputmode="decimal" min="0" step="0.5" value="10">
               <span>시간</span>
@@ -421,12 +594,12 @@
           </div>
 
           <div class="field">
-            <label for="workDays">월 근무일수</label>
+            <label for="workDays"><span class="field-icon">월</span>월 근무일수</label>
             <div class="input-unit">
               <input id="workDays" type="number" inputmode="numeric" min="0" step="1" value="26">
               <span>일</span>
             </div>
-            <small>기본값 26일</small>
+            <small>기본값 26일입니다.</small>
           </div>
         </div>
 
@@ -436,55 +609,55 @@
         </div>
       </form>
 
-      <aside class="result-panel" aria-live="polite">
-        <h2>계산 결과</h2>
+      <aside class="panel" aria-live="polite">
+        <h2 class="section-title"><span class="title-icon">OUT</span>계산 결과</h2>
         <div class="result-list">
           <div class="result-item">
-            <span class="result-label">오늘 매출</span>
+            <span class="result-icon">₩</span>
+            <span class="result-label">오늘 실제 받은 돈</span>
             <strong class="result-value" id="resultRevenue">0원</strong>
           </div>
           <div class="result-item">
+            <span class="result-icon">비</span>
             <span class="result-label">오늘 총비용</span>
             <strong class="result-value" id="resultTotalCost">0원</strong>
           </div>
           <div class="result-item">
+            <span class="result-icon">유</span>
             <span class="result-label">유류비</span>
             <strong class="result-value" id="resultFuelCost">0원</strong>
           </div>
           <div class="result-item">
+            <span class="result-icon">고</span>
             <span class="result-label">하루 고정비</span>
             <strong class="result-value" id="resultDailyFixedCost">0원</strong>
           </div>
           <div class="result-item highlight">
+            <span class="result-icon">순</span>
             <span class="result-label">실제 순수익</span>
             <strong class="result-value" id="resultNetIncome">0원</strong>
           </div>
           <div class="result-item">
+            <span class="result-icon">시</span>
             <span class="result-label">실제 시급</span>
             <strong class="result-value" id="resultHourlyIncome">0원</strong>
           </div>
           <div class="result-item">
+            <span class="result-icon">월</span>
             <span class="result-label">월 예상 순수익</span>
             <strong class="result-value" id="resultMonthlyIncome">0원</strong>
           </div>
         </div>
-        <p class="notice">계산 결과는 입력값 기준의 단순 추정치입니다. 세금, 건강보험료, 국민연금은 V1.0 계산에 포함하지 않았습니다.</p>
+        <p class="notice">계산 결과는 입력값 기준의 단순 추정치입니다. 세금, 건강보험료, 국민연금은 별도 계산이 필요하며 포함하지 않았습니다.</p>
         <p class="warning" id="warningMessage">연비 또는 근무시간이 0이면 일부 항목을 계산할 수 없습니다.</p>
       </aside>
     </section>
 
-    <section class="link-panel" aria-labelledby="nextTitle">
-      <h2 id="nextTitle">생활금융연구소에서 다음도 확인하세요</h2>
-      <ul class="question-list">
-        <li>배달기사 세금도 확인해보셨나요?</li>
-        <li>건강보험료는 얼마나 나올까요?</li>
-        <li>국민연금은 얼마를 내고 있을까요?</li>
-      </ul>
-      <div class="cta-row">
-        <a class="cta-button kakao-button" href="https://pf.kakao.com/" target="_blank" rel="noopener">카카오채널 이동</a>
-        <a class="cta-button blog-button" href="https://blog.naver.com/" target="_blank" rel="noopener">생활금융연구소 블로그 이동</a>
-      </div>
-      <p class="embed-note">버튼 주소는 실제 생활금융연구소 카카오채널 및 블로그 주소로 교체해서 사용하세요.</p>
+    <section class="footer-bar" aria-label="생활금융연구소 연결">
+      <img class="footer-logo" src="assets/brand-logo-crop.png" alt="생활금융연구소 로고">
+      <div class="footer-message"><strong>매출보다 중요한 건 실제로 남는 돈입니다.</strong><br>루키와 루나가 생활금융 계산을 쉽게 도와드릴게요.</div>
+      <a class="link-chip" href="https://pf.kakao.com/_gPnnX" target="_blank" rel="noopener"><span>Talk</span>카카오채널<br>생활금융연구소</a>
+      <a class="link-chip" href="https://blog.naver.com/ideabank0246" target="_blank" rel="noopener"><span>Blog</span>공식 블로그<br>생활금융연구소</a>
     </section>
   </main>
 
@@ -499,7 +672,7 @@
         coffeeCost: 4500,
         cigaretteCost: 4500,
         extraCost: 4214,
-        annualDepreciation: 0,
+        vehicleValue: 0,
         annualInsurance: 0,
         monthlyMaintenance: 0,
         workHours: 10,
@@ -510,6 +683,7 @@
       var form = document.getElementById("calculatorForm");
       var resetButton = document.getElementById("resetButton");
       var warningMessage = document.getElementById("warningMessage");
+      var depreciationDays = 365 * 3;
 
       function getNumber(id) {
         var value = Number(document.getElementById(id).value);
@@ -534,14 +708,14 @@
         var coffeeCost = getNumber("coffeeCost");
         var cigaretteCost = getNumber("cigaretteCost");
         var extraCost = getNumber("extraCost");
-        var annualDepreciation = getNumber("annualDepreciation");
+        var vehicleValue = getNumber("vehicleValue");
         var annualInsurance = getNumber("annualInsurance");
         var monthlyMaintenance = getNumber("monthlyMaintenance");
         var workHours = getNumber("workHours");
         var workDays = getNumber("workDays");
 
         var fuelCost = fuelEfficiency > 0 ? (distance / fuelEfficiency) * fuelPrice : 0;
-        var dailyDepreciation = annualDepreciation / 365;
+        var dailyDepreciation = vehicleValue / depreciationDays;
         var dailyInsurance = annualInsurance / 365;
         var dailyMaintenance = monthlyMaintenance / 30;
         var dailyFixedCost = dailyDepreciation + dailyInsurance + dailyMaintenance;
