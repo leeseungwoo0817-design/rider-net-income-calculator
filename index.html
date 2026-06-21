@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>라이더 순수익 계산기 V1.0 | 생활금융연구소</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #667085;
+      --line: #d9e0ea;
+      --brand: #1769e0;
+      --brand-dark: #0f4fa8;
+      --good: #0f8a5f;
+      --warn: #c05621;
+      --shadow: 0 14px 36px rgba(23, 32, 51, 0.10);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .rider-calculator {
+      width: min(100%, 980px);
+      margin: 0 auto;
+      padding: 24px 14px 36px;
+    }
+
+    .calculator-header {
+      margin-bottom: 18px;
+      padding: 22px 18px;
+      background: linear-gradient(135deg, #123b7a, #1769e0);
+      color: #ffffff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .calculator-header p {
+      margin: 8px 0 0;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 15px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 36px);
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .input-panel,
+    .result-panel,
+    .link-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .input-panel,
+    .result-panel {
+      padding: 18px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .field small {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid #c8d1df;
+      border-radius: 7px;
+      padding: 10px 12px;
+      color: var(--ink);
+      background: #ffffff;
+      font-size: 17px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    input:focus {
+      outline: 3px solid rgba(23, 105, 224, 0.18);
+      border-color: var(--brand);
+    }
+
+    .input-unit {
+      position: relative;
+    }
+
+    .input-unit input {
+      padding-right: 42px;
+    }
+
+    .input-unit span {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button,
+    .cta-button {
+      min-height: 46px;
+      border: 0;
+      border-radius: 7px;
+      padding: 11px 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .primary-button {
+      flex: 1;
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .primary-button:hover {
+      background: var(--brand-dark);
+    }
+
+    .secondary-button {
+      background: #e9eef7;
+      color: #243047;
+    }
+
+    .result-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid #edf1f6;
+    }
+
+    .result-item:last-child {
+      border-bottom: 0;
+    }
+
+    .result-label {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .result-value {
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 900;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .result-item.highlight {
+      margin: 2px 0;
+      padding: 15px 12px;
+      background: #eef8f4;
+      border: 1px solid #bee4d2;
+      border-radius: var(--radius);
+    }
+
+    .result-item.highlight .result-label,
+    .result-item.highlight .result-value {
+      color: var(--good);
+    }
+
+    .notice {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .warning {
+      margin-top: 12px;
+      color: var(--warn);
+      font-size: 13px;
+      font-weight: 700;
+      display: none;
+    }
+
+    .link-panel {
+      margin-top: 16px;
+      padding: 18px;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 7px;
+      margin: 0 0 15px;
+      padding: 0;
+      list-style: none;
+      color: #26344d;
+      font-weight: 800;
+    }
+
+    .question-list li::before {
+      content: "Q. ";
+      color: var(--brand);
+    }
+
+    .cta-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .kakao-button {
+      background: #fee500;
+      color: #1f1f1f;
+    }
+
+    .blog-button {
+      background: #03c75a;
+      color: #ffffff;
+    }
+
+    .embed-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .rider-calculator {
+        padding: 12px 10px 28px;
+      }
+
+      .calculator-header {
+        padding: 18px 14px;
+      }
+
+      .calculator-grid,
+      .field-grid,
+      .cta-row {
+        grid-template-columns: 1fr;
+      }
+
+      .input-panel,
+      .result-panel,
+      .link-panel {
+        padding: 15px;
+      }
+
+      .actions {
+        position: sticky;
+        bottom: 0;
+        margin: 15px -15px -15px;
+        padding: 10px 15px;
+        background: rgba(255, 255, 255, 0.94);
+        border-top: 1px solid var(--line);
+      }
+
+      .result-value {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="rider-calculator" id="riderCalculator">
+    <section class="calculator-header" aria-labelledby="calculatorTitle">
+      <h1 id="calculatorTitle">라이더 순수익 계산기 V1.0</h1>
+      <p>오늘 매출에서 실제 지출을 뺀 뒤, 오늘 얼마가 남았는지 바로 확인하세요.</p>
+    </section>
+
+    <section class="calculator-grid">
+      <form class="input-panel" id="calculatorForm">
+        <h2>오늘 입력</h2>
+        <div class="field-grid">
+          <div class="field">
+            <label for="revenue">오늘 매출</label>
+            <div class="input-unit">
+              <input id="revenue" type="number" inputmode="numeric" min="0" step="1000" value="200000">
+              <span>원</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="distance">오늘 주행거리</label>
+            <div class="input-unit">
+              <input id="distance" type="number" inputmode="decimal" min="0" step="1" value="150">
+              <span>km</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="fuelEfficiency">연비</label>
+            <div class="input-unit">
+              <input id="fuelEfficiency" type="number" inputmode="decimal" min="0" step="0.1" value="35">
+              <span>km/L</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="fuelPrice">리터당 유가</label>
+            <div class="input-unit">
+              <input id="fuelPrice" type="number" inputmode="numeric" min="0" step="10" value="1700">
+              <span>원</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="mealCost">식비</label>
+            <div class="input-unit">
+              <input id="mealCost" type="number" inputmode="numeric" min="0" step="1000" value="12000">
+              <span>원</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="coffeeCost">커피</label>
+            <div class="input-unit">
+              <input id="coffeeCost" type="number" inputmode="numeric" min="0" step="500" value="4500">
+              <span>원</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="cigaretteCost">담배</label>
+            <div class="input-unit">
+              <input id="cigaretteCost" type="number" inputmode="numeric" min="0" step="500" value="4500">
+              <span>원</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="extraCost">기타 비용</label>
+            <div class="input-unit">
+              <input id="extraCost" type="number" inputmode="numeric" min="0" step="100" value="4214">
+              <span>원</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="annualDepreciation">연간 감가상각비</label>
+            <div class="input-unit">
+              <input id="annualDepreciation" type="number" inputmode="numeric" min="0" step="10000" value="0">
+              <span>원</span>
+            </div>
+            <small>오토바이 가치 하락분을 365일로 나눠 반영</small>
+          </div>
+
+          <div class="field">
+            <label for="annualInsurance">연간 보험료</label>
+            <div class="input-unit">
+              <input id="annualInsurance" type="number" inputmode="numeric" min="0" step="10000" value="0">
+              <span>원</span>
+            </div>
+            <small>연간 보험료 ÷ 365일</small>
+          </div>
+
+          <div class="field">
+            <label for="monthlyMaintenance">월 정비비</label>
+            <div class="input-unit">
+              <input id="monthlyMaintenance" type="number" inputmode="numeric" min="0" step="10000" value="0">
+              <span>원</span>
+            </div>
+            <small>월 정비비 ÷ 30일</small>
+          </div>
+
+          <div class="field">
+            <label for="workHours">근무시간</label>
+            <div class="input-unit">
+              <input id="workHours" type="number" inputmode="decimal" min="0" step="0.5" value="10">
+              <span>시간</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="workDays">월 근무일수</label>
+            <div class="input-unit">
+              <input id="workDays" type="number" inputmode="numeric" min="0" step="1" value="26">
+              <span>일</span>
+            </div>
+            <small>기본값 26일</small>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary-button" type="submit">계산하기</button>
+          <button class="secondary-button" type="button" id="resetButton">초기화</button>
+        </div>
+      </form>
+
+      <aside class="result-panel" aria-live="polite">
+        <h2>계산 결과</h2>
+        <div class="result-list">
+          <div class="result-item">
+            <span class="result-label">오늘 매출</span>
+            <strong class="result-value" id="resultRevenue">0원</strong>
+          </div>
+          <div class="result-item">
+            <span class="result-label">오늘 총비용</span>
+            <strong class="result-value" id="resultTotalCost">0원</strong>
+          </div>
+          <div class="result-item">
+            <span class="result-label">유류비</span>
+            <strong class="result-value" id="resultFuelCost">0원</strong>
+          </div>
+          <div class="result-item">
+            <span class="result-label">하루 고정비</span>
+            <strong class="result-value" id="resultDailyFixedCost">0원</strong>
+          </div>
+          <div class="result-item highlight">
+            <span class="result-label">실제 순수익</span>
+            <strong class="result-value" id="resultNetIncome">0원</strong>
+          </div>
+          <div class="result-item">
+            <span class="result-label">실제 시급</span>
+            <strong class="result-value" id="resultHourlyIncome">0원</strong>
+          </div>
+          <div class="result-item">
+            <span class="result-label">월 예상 순수익</span>
+            <strong class="result-value" id="resultMonthlyIncome">0원</strong>
+          </div>
+        </div>
+        <p class="notice">계산 결과는 입력값 기준의 단순 추정치입니다. 세금, 건강보험료, 국민연금은 V1.0 계산에 포함하지 않았습니다.</p>
+        <p class="warning" id="warningMessage">연비 또는 근무시간이 0이면 일부 항목을 계산할 수 없습니다.</p>
+      </aside>
+    </section>
+
+    <section class="link-panel" aria-labelledby="nextTitle">
+      <h2 id="nextTitle">생활금융연구소에서 다음도 확인하세요</h2>
+      <ul class="question-list">
+        <li>배달기사 세금도 확인해보셨나요?</li>
+        <li>건강보험료는 얼마나 나올까요?</li>
+        <li>국민연금은 얼마를 내고 있을까요?</li>
+      </ul>
+      <div class="cta-row">
+        <a class="cta-button kakao-button" href="https://pf.kakao.com/" target="_blank" rel="noopener">카카오채널 이동</a>
+        <a class="cta-button blog-button" href="https://blog.naver.com/" target="_blank" rel="noopener">생활금융연구소 블로그 이동</a>
+      </div>
+      <p class="embed-note">버튼 주소는 실제 생활금융연구소 카카오채널 및 블로그 주소로 교체해서 사용하세요.</p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var defaults = {
+        revenue: 200000,
+        distance: 150,
+        fuelEfficiency: 35,
+        fuelPrice: 1700,
+        mealCost: 12000,
+        coffeeCost: 4500,
+        cigaretteCost: 4500,
+        extraCost: 4214,
+        annualDepreciation: 0,
+        annualInsurance: 0,
+        monthlyMaintenance: 0,
+        workHours: 10,
+        workDays: 26
+      };
+
+      var fieldIds = Object.keys(defaults);
+      var form = document.getElementById("calculatorForm");
+      var resetButton = document.getElementById("resetButton");
+      var warningMessage = document.getElementById("warningMessage");
+
+      function getNumber(id) {
+        var value = Number(document.getElementById(id).value);
+        return Number.isFinite(value) && value > 0 ? value : 0;
+      }
+
+      function formatWon(value) {
+        var rounded = Math.round(value);
+        return rounded.toLocaleString("ko-KR") + "원";
+      }
+
+      function setText(id, text) {
+        document.getElementById(id).textContent = text;
+      }
+
+      function calculate() {
+        var revenue = getNumber("revenue");
+        var distance = getNumber("distance");
+        var fuelEfficiency = getNumber("fuelEfficiency");
+        var fuelPrice = getNumber("fuelPrice");
+        var mealCost = getNumber("mealCost");
+        var coffeeCost = getNumber("coffeeCost");
+        var cigaretteCost = getNumber("cigaretteCost");
+        var extraCost = getNumber("extraCost");
+        var annualDepreciation = getNumber("annualDepreciation");
+        var annualInsurance = getNumber("annualInsurance");
+        var monthlyMaintenance = getNumber("monthlyMaintenance");
+        var workHours = getNumber("workHours");
+        var workDays = getNumber("workDays");
+
+        var fuelCost = fuelEfficiency > 0 ? (distance / fuelEfficiency) * fuelPrice : 0;
+        var dailyDepreciation = annualDepreciation / 365;
+        var dailyInsurance = annualInsurance / 365;
+        var dailyMaintenance = monthlyMaintenance / 30;
+        var dailyFixedCost = dailyDepreciation + dailyInsurance + dailyMaintenance;
+        var totalCost = fuelCost + mealCost + coffeeCost + cigaretteCost + extraCost + dailyFixedCost;
+        var netIncome = revenue - totalCost;
+        var displayedNetIncome = Math.round(netIncome);
+        var hourlyIncome = workHours > 0 ? displayedNetIncome / workHours : 0;
+        var monthlyIncome = displayedNetIncome * workDays;
+
+        setText("resultRevenue", formatWon(revenue));
+        setText("resultFuelCost", formatWon(fuelCost));
+        setText("resultDailyFixedCost", formatWon(dailyFixedCost));
+        setText("resultTotalCost", formatWon(totalCost));
+        setText("resultNetIncome", formatWon(netIncome));
+        setText("resultHourlyIncome", formatWon(hourlyIncome));
+        setText("resultMonthlyIncome", formatWon(monthlyIncome));
+
+        warningMessage.style.display = fuelEfficiency <= 0 || workHours <= 0 ? "block" : "none";
+      }
+
+      fieldIds.forEach(function (id) {
+        document.getElementById(id).addEventListener("input", calculate);
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        calculate();
+      });
+
+      resetButton.addEventListener("click", function () {
+        fieldIds.forEach(function (id) {
+          document.getElementById(id).value = defaults[id];
+        });
+        calculate();
+      });
+
+      calculate();
+    })();
+  </script>
+</body>
+</html>
